@@ -29,7 +29,7 @@ CREATE TABLE cmd(
 	 unique(context, cmd, type)
 );
 `
-const dbName = "cmd.db"
+var dbName = os.Getenv("HOME") + "/.alis.cmd.db"
 
 func init() {
 	log.Println("start to init db!")

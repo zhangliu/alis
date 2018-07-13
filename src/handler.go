@@ -78,10 +78,11 @@ func handleExec(p *Params) {
 
 	nextID := rows[0].Next
 	nextRow := db.FindOriginOne(&db.Data{ ID: nextID })
-	isSure := sure(nextRow.Cmd)
-	if !isSure {
-		return
-	}
+	log.Printf("will to run: %s", nextRow.Cmd)
+	// isSure := sure(nextRow.Cmd)
+	// if !isSure {
+	// 	return
+	// }
 	shell := exec.Command("/bin/bash", "-c", nextRow.Cmd)
 	output, err := shell.Output()
 	utils.HandleErr(err)
