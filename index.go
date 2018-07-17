@@ -19,7 +19,6 @@ func main() {
 		return
 	}
 	args := os.Args[1:]
-	
 	runParams := alis.ParseParams(args)
 	log.Printf("解析出运行参数: type=%s, args=%s", runParams.Type, runParams.Args)
 

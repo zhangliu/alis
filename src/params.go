@@ -2,6 +2,7 @@ package alis
 
 import (
 	"strings"
+	// "log"
 )
 
 type Params struct {
@@ -12,12 +13,12 @@ type Params struct {
 func ParseParams(args []string) *Params {
 	switch args[0] {
 		case "map":
+			return &Params{ Type: args[0], Args: args[1:] }
 		case "search":
 			return &Params{ Type: args[0], Args: args[1:] }
 		default:
 			return &Params{ Type: "exec", Args: []string{ args[0] } }
 	}
-	return nil
 }
 
 func genArgs(str string) []string {
