@@ -33,7 +33,7 @@ var dbName = os.Getenv("HOME") + "/.alis.cmd.db"
 
 func init() {
 	log.Println("start to init db!")
-	isExist, _ := isFileExist(dbName)
+	isExist, _ := utils.IsFileExist(dbName)
 
 	if isExist { return }
 
@@ -43,13 +43,6 @@ func init() {
 
 	_, err = db.Exec(createSQL)
 	utils.HandleErr(err)
-}
-
-func isFileExist(file string) (bool, error) {
-	_, err := os.Stat(file)
-	if err == nil { return true, nil }
-	if os.IsNotExist(err) { return false, err }
-	return true, err
 }
 
 func Create(d *Data) sql.Result {
