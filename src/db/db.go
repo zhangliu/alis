@@ -5,7 +5,7 @@ import (
 	_ "github.com/mattn/go-sqlite3" // only run init
 	"os"
 	"zl/alis/src/utils"
-	"log"
+	// "log"
 )
 
 type Data struct {
@@ -32,7 +32,7 @@ CREATE TABLE cmd(
 var dbName = os.Getenv("HOME") + "/.alis.cmd.db"
 
 func init() {
-	log.Println("start to init db!")
+	// log.Println("start to init db!")
 	isExist, _ := isFileExist(dbName)
 
 	if isExist { return }
@@ -77,7 +77,7 @@ func Find(d *Data) []*Data {
 	return convert2Data(rows)
 }
 
-func convert2Data (rows *sql.Rows) []*Data {
+func convert2Data(rows *sql.Rows) []*Data {
 	var datas []*Data
 	for rows.Next() {
 		d := &Data{}
@@ -110,4 +110,18 @@ func FindOriginOne(d *Data) *Data {
 		}
 		result = FindOne(&Data{ ID: result.Next })
 	}
+}
+
+func FindLike(d *Data) []*Data {
+	db, err := sql.Open("sqlite3", dbName)
+	utils.HandleErr(err)
+	defer db.Close()
+
+	likeSQL := "%" + d.Cmd + "%"
+	findSQL := "select * from cmd where cmd like ?"
+	rows, err := db.Query(findSQL, likeSQL)
+	defer rows.Close()
+	utils.HandleErr(err)
+
+	return convert2Data(rows)
 }

@@ -19,6 +19,9 @@ func (h *Handler) Run(p *Params) {
 		case "map":
 			handleMap(p)
 			break
+		case "search":
+			handleSearch(p)
+			break
 		case "exec":
 			handleExec(p)
 			break
@@ -68,12 +71,23 @@ func getSelectedCmd(rows []*db.Data) int {
 	return i - 1
 }
 
+func handleSearch(p *Params) {
+	rows := db.FindLike(&db.Data{ Cmd: p.Args[0] })
+
+	log.Println("查询到指令：")
+	index := 1
+	for _, row := range(rows) {
+		fmt.Println(fmt.Sprintf("%d ==> %s", index, row.Cmd))
+		index++
+	}
+}
+
 func handleExec(p *Params) {
 	data := &db.Data{ Cmd: p.Args[0] }
 	rows := db.Find(data)
 	length := len(rows)
 	if length <= 0 {
-		panic("no rows find!")
+		panic("【错误】未发现对应的指令！")
 	}
 
 	nextID := rows[0].Next

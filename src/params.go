@@ -9,14 +9,15 @@ type Params struct {
 	Args []string
 }
 
-func ParseParams(str string) *Params {
-	var p *Params
-	if (strings.Contains(str, "=>")) {
-		return &Params{ Type: "map", Args: genArgs(str) }
+func ParseParams(args []string) *Params {
+	switch args[0] {
+		case "map":
+		case "search":
+			return &Params{ Type: args[0], Args: args[1:] }
+		default:
+			return &Params{ Type: "exec", Args: []string{ args[0] } }
 	}
-	
-	p = &Params{ Type: "exec", Args: []string{ str } }
-	return p
+	return nil
 }
 
 func genArgs(str string) []string {
